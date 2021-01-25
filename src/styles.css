@@ -1,0 +1,75 @@
+
+
+/* footer {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+} 
+*/
+
+.share-input:focus {
+    outline: 0 !important;
+    box-shadow: none
+}
+
+.share-input {
+    outline: 0 !important;
+    box-shadow: none
+}
+
+.publish {
+    border-radius: 0px !important;
+    color: #fff;
+    cursor: pointer
+}
+
+.publish:hover {
+    border-radius: 0px !important;
+    color: #fff;
+    cursor: pointer
+}
+
+.icons .fa-heart {
+    color: red
+}
+
+.ads-text {
+    font-size: 10px
+}
+
+.ads-content span {
+    font-size: 12px
+}
+
+.time {
+    font-size: 12px;
+    color: blue
+}
+
+.profile-content span {
+    font-size: 12px
+}
+
+.ads-content img {
+    width: 100%
+}
+
+
+/*Comments*/
+.photo-profile{
+    border:1px solid #DDD;    
+}
+
+.anchor-username h4{
+    font-weight:bold;    
+}
+
+.anchor-time{
+    color:#ADB2BB;
+    font-size:1.2rem;
+}
+
+.post-footer-comment-wrapper{
+    background-color:#F6F7F8;
+}
