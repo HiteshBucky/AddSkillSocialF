@@ -3,6 +3,8 @@ import {useLocation, useHistory} from 'react-router-dom'
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Menu from '../core/Menu'
+import Moment from 'react-moment'
+
 
 import { getAllComments } from '../core/helper/coreapicalls';
 import { isAutheticated } from "../auth/helper";
@@ -15,9 +17,6 @@ function Comments (props) {
 	let post  = useLocation()?.state?.post;
 	let history = useHistory();
 
-
-	//Force user if mannual search
-
 	const [comments, setComments] = useState([]);
 	const [description, setDescription] = useState('');
 	const [error, setError] = useState(false);
@@ -25,12 +24,13 @@ function Comments (props) {
 
 
 	useEffect(() => {
-		if(!post) return <Redirect to="/" />;
+		if(!post) return <Redirect to="/" />; // Force user if mannual search
+		setReload(false);
 		getAllComments(post._id).then(x => {
 			if(x.error) setError(x.error);
 			else setComments(x)
 		})
-	},[reload])
+	}, [reload])
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -38,6 +38,7 @@ function Comments (props) {
 			if(description.length < 1) { //If length is 0, just return;
 				return ;
 			}
+			setReload(false);
 			createComments(description, post._id ).then(x => {
 				if(x.error) setError(x.error)
 				else {
@@ -64,7 +65,9 @@ function Comments (props) {
 				              <div className="d-flex flex-column ml-2"> <h6>{ post.userData[0].username}</h6></div>
 				            </div>
 			            </Link>
-				        <div className="ml-2 float-right float-lg-right"> <h6>{post.createdAt.substring(0,10)}</h6></div>
+				        <div className="ml-2 float-right float-lg-right">
+	     			       	<h6><Moment fromNow>{post.createdAt}</Moment></h6>
+				        </div>
 
 			        </div>
 
@@ -94,7 +97,7 @@ function Comments (props) {
 			<div>
 				{ comments.map((comment, index) => {
 				  return (
-				    <div key={index} className="col-8 mb-4 offset-2">
+				    <div key={index} className="col-8 mb-4 offset-1">
 				      <div className=" mt-4 mb-5">
 	      			        <div className="panel panel-default">
 	      			            <div className="panel-body">
@@ -111,7 +114,7 @@ function Comments (props) {
 	      			                              	<Link to={{ pathname: '/user' , state : {id : comment.createdBy} }}>
 	      			                                	<a href="#" className="anchor-username"><h4 className="media-heading"> @{comment.userData[0].username}</h4></a> 
 	      			                                </Link>
-	      			                                <a href="#" className="anchor-time">51 mins</a>
+	      			                                <Moment fromNow>{comment.createdAt}</Moment>
 	      			                              </div>
 	      			                            </div>
 	      			                        </div>
@@ -120,6 +123,7 @@ function Comments (props) {
 	      			                         </div>
 	      			                    </div>             
 	      			               </section>
+	      			               <hr/>
 	      			               <section className="post-body">
 	      			                   <p>{comment.description}</p>
 	      			               </section>
@@ -142,13 +146,13 @@ function Comments (props) {
 			<div className="row">
 				<div className="share border bg-white col-8 feed-post mt-2 border offset-2">
 				    {PostBox()}
-			    	<div className="share border bg-white col-12 feed-post mt-2 border" style={{ 'margin-bottom' : '10%'}}>
+			    	<div className="share border bg-white col-12 feed-post  border" style={{ 'margin-bottom' : '10%'}}>
 			    	    <form action='/signin' method="post">
-			    		    <div className="d-flex flex-row inputs p-2 py-4">
+			    		    <div className="d-flex flex-row inputs p-2 py-2">
 			    		      <input type="text" required value={description} onChange={e => setDescription(e.target.value)} name="description" className="border-0 form-control share-input mt-4 ml-4 mb-4" placeholder="Share your thoughts" />
 			    		    </div>
 			    		    <div className=" flex-row  border-top">
-			    		        <div className="publish-button">
+			    		        <div className="publish-button mt-2">
 			    		        	<button className="align-items-center float-right btn btn-dark btn-block mb-2" onClick={e => handleSubmit(e)}>Add Comments</button>
 			    		        </div>
 			    		    </div>

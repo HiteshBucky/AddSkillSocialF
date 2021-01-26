@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { signup } from "../auth/helper";
+import Menu from "../core/Menu"
+
 
 const Signup = () => {
   const [values, setValues] = useState({ username: "", email: "", password: "", error: "", success: false });
@@ -30,7 +32,10 @@ const Signup = () => {
     return (
       <div>
       <div style={{'margin-top' : '10%'}}><h1>Signup</h1></div>
-      <div className="row mt-5">
+        {successMessage()}
+        {errorMessage()}
+      <div className="row mt-4">
+
         <div className="col-md-6 offset-sm-3 text-left">
           <form>
 
@@ -52,6 +57,10 @@ const Signup = () => {
             <button onClick={onSubmit} className="btn btn-success btn-block"> Submit </button>
 
           </form>
+
+          <Link to="/signup"><center className="mt-3">Already have a Account 
+          </center></Link>
+
         </div>
       </div>
       </div>
@@ -84,9 +93,9 @@ const Signup = () => {
 
   return (
     <div> 
+      <Menu />
+
       <div className="center container col-lg-8 col-md-8">
-        {successMessage()}
-        {errorMessage()}
         {signUpForm()}
       </div>
     </div>

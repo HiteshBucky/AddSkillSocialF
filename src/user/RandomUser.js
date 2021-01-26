@@ -11,36 +11,42 @@ import {getUserDetails, getAllPostOfUser, checkIfuserFollow, createFollow, creat
 import { isAutheticated } from "../auth/helper";
 
 
-function Profile() {
+function RandomProfile() {
 
 	let  userId  = useLocation()?.state?.id;
 	let history = useHistory();
 
-	console.log("Random called", userId)
+	const [isLoadingUserDetail, setLoadingUserDetail] = useState(true);
+	const [isLoadingPostList, setLoadingPostList] = useState(true);
+	const [reload, setReload] = useState(false);
 
 	const [userdata, setUserData] = useState({});
 	const [allpost, setAllPost] = useState([]);
-	const [reload, setReload] = useState(false);
+
 	const [isFollwing, setIsFollowing] = useState(false);
 
 	useEffect(() => {
 		if(!userId) { return history.push('/'); }
 
+		setLoadingUserDetail(true);
 		getUserDetails(userId).then(x => {
 			if(x.error) alert("Error!! Cant find user");
 			else {
 				setUserData(x);
+				setLoadingUserDetail(false);
 			}
 		})
-	}, []);
+	}, [isFollwing]);
 
 	useEffect(() => {
 		if(!userId){ console.log("HEllo 2"); return history.push('/') }
 
+		setLoadingPostList(true);
 		getAllPostOfUser(userId).then(x => {
 			if(x.error) alert("Error", x.error)
 			else {
-				setAllPost(x)
+				setAllPost(x);
+				setLoadingPostList(false);
 			}
 		})
 	}, [])
@@ -48,18 +54,20 @@ function Profile() {
 	useEffect(() => {
 		if(!userId) { return history.push('/'); }
 
-		checkIfuserFollow(userId).then(x => {
-			if(x.error) return alert(`Error!! ${x.error}`)
-			else{
-				setIsFollowing(x.follow)
-				console.log('isFollwing', isFollwing)
-			}
-		})
-
+		if(isAutheticated() == false) {
+			return setIsFollowing(false)
+		}else{
+			checkIfuserFollow(userId).then(x => {
+				if(x.error) return alert(`Error!! ${x.error}`)
+				else{
+					setIsFollowing(x.follow)
+				}
+			})
+		}
 	}, [])
 
 	function handleFollow() {
-		console.log('handleFollow');
+		if( !isAutheticated()) return history.push('/signup')
 		createFollow(userId).then(x => {
 			if(x.error) return alert(`Error!! ${x.error}`)
 			return setIsFollowing(true);
@@ -68,7 +76,6 @@ function Profile() {
 	}
 
 	function handleUnfollow() {
-		console.log('handleUnfollow');
 		createUnFollow(userId).then(x => {
 			if(x.error) return alert(`Error!! ${x.error}`)
 			return setIsFollowing(false);
@@ -96,7 +103,10 @@ function Profile() {
 				        </div>
 				      	<p className="lead bg-white font-weight-bold text-dark text-wrap"><center>{userdata.email}</center></p>
 
-				      	<div className="d-flex justify-content-around"><h5>Some More info</h5></div>
+				      	<hr/>
+				      	<div className="d-flex justify-content-around"><h5 className="text-light float-left">Posts {userdata.posts.length}</h5></div><hr/>
+				      	<div className="d-flex justify-content-around"><h5 className="text-light">Followers {userdata.followers.length}</h5></div><hr/>
+				      	<div className="d-flex justify-content-around"><h5 className="text-light">Follows {userdata.follows.length}</h5></div><hr/>
 				    </div>
 			  	</div>
 			</div>
@@ -121,11 +131,11 @@ function Profile() {
 		<div>
 			<Menu />
 			<div className="mt-3 row ml-2 mr-2 mt-2">
-				{leftPannel()}
-			    {rightPannel()}
+				{isLoadingUserDetail ? "Loading" : leftPannel() }
+				{isLoadingPostList ? "Loading" : rightPannel() }
 			</div>
 		</div>
 	)
 }
 
-export default Profile
+export default RandomProfile

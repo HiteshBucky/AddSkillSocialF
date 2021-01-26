@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+
+import Menu from "../core/Menu"
 
 import { signin, authenticate, isAutheticated } from "../auth/helper";
 
@@ -61,6 +65,8 @@ const Signin = () => {
 
       <div>
       <div style={{'margin-top' : '10%'}}><h1>Signin</h1></div>
+        {loadingMessage()}
+        {errorMessage()}
       <div className="row">
         <div className="col-md-6 offset-sm-3 text-left">
           <form>
@@ -77,6 +83,9 @@ const Signin = () => {
 
             <button onClick={onSubmit} className="btn btn-success btn-block">Submit</button>
           </form>
+
+          <Link to="/signup"><center className="mt-3">Don't Have an account</center></Link>
+
         </div>
       </div>
       </div>
@@ -85,9 +94,9 @@ const Signin = () => {
 
   return (
     <div> 
+      <Menu />
       <div className="center container col-lg-8 col-md-8">
-        {loadingMessage()}
-        {errorMessage()}
+        
         {signInForm()}
         {performRedirect()}
       </div>

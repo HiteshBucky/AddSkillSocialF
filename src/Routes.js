@@ -10,6 +10,8 @@ import Followers from './user/Followers'
 import Following from './user/Following'
 import Comments from './user/Comments';
 import People from './user/People';
+import UpdateProfile from './user/UpdateProfile'
+import PostUpdate from './user/PostUpdate'
 
 //Private Route
 import PrivateRoute from "./auth/helper/PrivateRoutes";
@@ -33,8 +35,10 @@ const Routes = () => {
         <Route path='/comments' exact component={Comments} />
 
         <PrivateRoute path="/profile" exact component={Profile} />
+        <PrivateRoute path="/update" exact component={UpdateProfile} />
         <PrivateRoute path="/followers" exact component={Followers} />
         <PrivateRoute path="/following" exact component={Following} />
+        <PrivateRoute path="/post/update" exact component={PostUpdate} />
         
       </Switch>
     </BrowserRouter>
