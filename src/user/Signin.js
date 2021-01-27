@@ -84,6 +84,8 @@ const Signin = () => {
             <button onClick={onSubmit} className="btn btn-success btn-block">Submit</button>
           </form>
 
+          <Link to="/forgetpassword"><center className="mt-3">Forget Password</center></Link>
+
           <Link to="/signup"><center className="mt-3">Don't Have an account</center></Link>
 
         </div>

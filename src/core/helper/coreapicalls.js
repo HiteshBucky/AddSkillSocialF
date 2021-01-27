@@ -14,6 +14,25 @@ export const getPostInfo = (postId) => {
         .catch(err => console.log(err))
 }
 
+export const handleForgetPassword = email => {
+    return fetch(`${API}/forgetpassword`, {
+        method: "post",
+        headers: { Accept: "application/json", 'Content-Type': 'application/json'},
+        body: JSON.stringify({ email : email })
+    })
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+export const handleResetPassword = (id, token, password) => {
+    return fetch(`${API}/resetpassword/${id}/${token}`, {
+        method: "post",
+        headers: { Accept: "application/json", 'Content-Type': 'application/json'},
+        body: JSON.stringify({ password : password })
+    })
+    .then(res => res.json())
+    .catch(err => console.log(err));
+}
 export const getUserDetails = (userId) => {
 	return fetch(`${API}/users/${userId}`, { method: "GET"})
     		.then(response => response.json())

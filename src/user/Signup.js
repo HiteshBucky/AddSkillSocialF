@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { signup } from "../auth/helper";
 import Menu from "../core/Menu"
 
+var x = parseInt(Math.random()*10), y = parseInt(Math.random()*10), result = x + y;
 
 const Signup = () => {
   const [values, setValues] = useState({ username: "", email: "", password: "", error: "", success: false });
-
   const { username, email, password, error, success } = values;
-
   const handleChange = name => event => setValues({ ...values, error: false, [name]: event.target.value });
   
+  const [answer, setAnswer] = useState('');
+  const [isCorrect, setIsCorrect] = useState(false);
 
   const onSubmit = event => {
     event.preventDefault();
@@ -27,6 +28,13 @@ const Signup = () => {
       })
       .catch(console.log("Error in signup"));
   };
+
+  const handleCheck = (e) => {
+    console.log(e.target.value)
+    setAnswer(e.target.value);
+    setIsCorrect(e.target.value == result);
+    console.log("answer ", answer , "result" , isCorrect)
+  }
 
   const signUpForm = () => {
     return (
@@ -54,7 +62,12 @@ const Signup = () => {
               <input onChange={handleChange("password")} className="form-control" type="password" value={password} />
             </div>
 
-            <button onClick={onSubmit} className="btn btn-success btn-block"> Submit </button>
+            <div className="form-group">
+              What is {x} + {y} = ? 
+              <input className="ml-2" type="Number" value={answer} onChange={e => handleCheck(e)} />
+            </div>
+
+            <button disabled={!isCorrect} onClick={onSubmit} className="btn btn-success btn-block"> Submit </button>
 
           </form>
 

@@ -3,6 +3,8 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Signup from "./user/Signup";
 import Signin from "./user/Signin";
+import ForgetPassword from "./user/ForgetPassword";
+import ResetPassword from "./user/ResetPassword";
 import Home from './user/Home'
 import RandomUser from './user/RandomUser'
 import Profile from './user/Profile'
@@ -28,6 +30,8 @@ const Routes = () => {
         //Auth
         <Route path="/signup" exact component={Signup} />
         <Route path="/signin" exact component={Signin} />
+        <Route path="/forgetpassword" exact component={ForgetPassword} />
+        <Route path="/resetpassword" exact component={ResetPassword} />
 
         //Profile
         <Route path='/user' exact component={RandomUser} />
